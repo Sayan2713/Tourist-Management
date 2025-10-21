@@ -1,4 +1,4 @@
-# tourist_management_system_project/tours/forms.py
+
 
 from django import forms
 from .models import Booking, TourPackage, Review # Import your Booking and TourPackage models

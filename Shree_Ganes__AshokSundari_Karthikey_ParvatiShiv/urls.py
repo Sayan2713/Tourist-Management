@@ -1,4 +1,3 @@
-# Shree_kanes_AshokdKumar_Sanket_Riksy_Parvatihi/urls.py
 
 from django.contrib import admin
 from django.urls import path, include

@@ -1,4 +1,3 @@
-# tourist_management_system_project/tours/admin.py
 
 from django.contrib import admin
 from .models import Destination, TourPackage, Booking, Review # Import your models

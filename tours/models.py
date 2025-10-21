@@ -1,4 +1,3 @@
-# tourist_management_system_project/tours/models.py
 
 from django.db import models
 from django.contrib.auth.models import User # For Booking and Review models

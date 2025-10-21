@@ -1,4 +1,3 @@
-# tourist_management_system_project/users/models.py
 
 from django.db import models
 from django.contrib.auth.models import User # Import Django's built-in User model

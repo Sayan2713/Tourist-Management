@@ -1,4 +1,3 @@
-# tourist_management_system_project/users/views.py
 
 from django.shortcuts import render, redirect
 from django.contrib import messages
