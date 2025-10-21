@@ -1,0 +1,25 @@
+{# tourist_management_system_project/templates/home.html #}
+
+{% extends 'base.html' %}
+
+{% block title %}Welcome to TMS!{% endblock %}
+
+{% block content %}
+    <h1>Welcome to the Tourist Management System!</h1>
+    <p>Explore amazing tour packages and destinations.</p>
+
+    <section class="featured-tours">
+        <h2>Featured Tours</h2>
+        {# Tour listings will go here later, perhaps dynamically #}
+        <p>Coming soon...</p>
+    </section>
+
+    <section class="search-bar">
+        <h2>Find Your Next Adventure</h2>
+        <form action="{% url 'tours:tour_list' %}" method="get">
+            <input type="text" name="q" placeholder="Search tours or destinations..." value="{{ query|default_if_none:'' }}">
+            <button type="submit">Search</button>
+        </form>
+    </section>
+
+{% endblock %}

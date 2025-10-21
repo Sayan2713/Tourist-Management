@@ -1,0 +1,37 @@
+{# tourist_management_system_project/templates/tours/destination_list.html #}
+
+{% extends 'base.html' %}
+{% load static %} {# Load static for destination images #}
+
+{% block title %}All Destinations{% endblock %}
+
+{% block content %}
+    <div class="container my-4">
+        <h1>Our Destinations</h1>
+        {% if destinations %}
+            <div class="row row-cols-1 row-cols-md-3 g-4"> {# Bootstrap grid layout #}
+                {% for destination in destinations %}
+                    <div class="col">
+                        <div class="card h-100"> {# Bootstrap card #}
+                            {% if destination.image %}
+                                <img src="{{ destination.image.url }}" class="card-img-top" alt="{{ destination.name }}" style="height: 200px; object-fit: cover;">
+                            {% else %}
+                                {# You might want a default placeholder image for destinations here #}
+                                <img src="{% static 'images/default_destination_pic.png' %}" class="card-img-top" alt="Default Destination Image" style="height: 200px; object-fit: cover;">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ destination.name }}</h5>
+                                <p class="card-text">{{ destination.description|truncatechars:100 }}</p> {# Truncate long descriptions #}
+                                <p class="card-text"><small class="text-muted">Location: {{ destination.location }}</small></p>
+                                {# Link to destination detail page if you make one, or tours in this destination #}
+                                <a href="{% url 'tours:tour_list' %}?q={{ destination.name }}" class="btn btn-primary">View Tours in {{ destination.name }}</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No destinations available at the moment. Please check back later!</p>
+        {% endif %}
+    </div>
+{% endblock %}

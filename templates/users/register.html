@@ -1,0 +1,26 @@
+{# tourist_management_system_project/templates/users/register.html #}
+
+{% extends 'base.html' %}
+{% load crispy_forms_tags %} {# We'll install django-crispy-forms later for nicer forms #}
+
+{% block title %}Register Account{% endblock %}
+
+{% block content %}
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %} {# Django security tag for forms #}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Join Today</legend>
+                {{ form|crispy }} {# Render form fields using crispy-forms #}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Sign Up</button>
+            </div>
+        </form>
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                Already Have An Account? <a class="ml-2" href="#">Sign In</a> {# Link to login page #}
+            </small>
+        </div>
+    </div>
+{% endblock %}

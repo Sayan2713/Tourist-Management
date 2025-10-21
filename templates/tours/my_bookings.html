@@ -1,0 +1,30 @@
+{# tourist_management_system_project/templates/tours/my_bookings.html #}
+
+{% extends 'base.html' %}
+
+{% block title %}My Bookings{% endblock %}
+
+{% block content %}
+    <h1>My Bookings</h1>
+    {% if user_bookings %}
+        <div class="bookings-list">
+            {% for booking in user_bookings %}
+                <div class="booking-card">
+                    <h3><a href="{% url 'tours:tour_detail' pk=booking.tour_package.pk %}">{{ booking.tour_package.name }}</a></h3>
+                    <p><strong>Destination:</strong> {{ booking.tour_package.destination.name }}</p>
+                    <p><strong>Booking Date:</strong> {{ booking.booking_date|date:"F d, Y H:i" }}</p>
+                    <p><strong>Number of People:</strong> {{ booking.number_of_people }}</p>
+                    <p><strong>Total Price:</strong> ${{ booking.total_price }}</p>
+                    <p><strong>Status:</strong> <span class="badge badge-{{ booking.status }}">{{ booking.get_status_display }}</span></p>
+                    <p><strong>Payment Status:</strong> <span class="badge badge-{{ booking.payment_status }}">{{ booking.get_payment_status_display }}</span></p>
+                    {% if booking.special_requests %}
+                        <p><strong>Special Requests:</strong> {{ booking.special_requests }}</p>
+                    {% endif %}
+                    <hr>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>You have no bookings yet. <a href="{% url 'tours:tour_list' %}">Explore tours to book one!</a></p>
+    {% endif %}
+{% endblock %}

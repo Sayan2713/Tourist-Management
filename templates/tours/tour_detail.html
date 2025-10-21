@@ -1,0 +1,89 @@
+{# tourist_management_system_project/templates/tours/tour_detail.html #}
+
+{% extends 'base.html' %}
+{% load crispy_forms_tags %} {# Ensure crispy_forms_tags is loaded for the form #}
+{% load static %} {# Make sure static is loaded if you're using default images #}
+
+{% block title %}{{ tour.name }} Details{% endblock %}
+
+{% block content %}
+    <div class="tour-detail-container">
+        <h1>{{ tour.name }} ({{ tour.destination.name }})</h1>
+
+        {% if tour.image %}
+            <img src="{{ tour.image.url }}" alt="{{ tour.name }}" style="max-width: 500px; height: auto;">
+        {% else %}
+            {# Optional: Display a default tour image if none is uploaded #}
+            <img src="{% static 'images/default_tour_pic.png' %}" alt="Default Tour Image" style="max-width: 500px; height: auto;">
+        {% endif %}
+
+        <p><strong>Price:</strong> ${{ tour.price }}</p>
+        <p><strong>Duration:</strong> {{ tour.duration_days }} days</p>
+        <p><strong>Tour Type:</strong> {{ tour.get_tour_type_display }}</p>
+        <p><strong>Available Slots:</strong> {{ tour.available_slots }} / {{ tour.max_participants }}</p>
+        <p><strong>Dates:</strong> {{ tour.start_date|date:"F d, Y" }} to {{ tour.end_date|date:"F d, Y" }}</p>
+
+        <h3>Description:</h3>
+        <p>{{ tour.description }}</p>
+
+        {% if tour.includes %}
+            <h3>Includes:</h3>
+            <p>{{ tour.includes }}</p>
+        {% endif %}
+
+        {% if tour.excludes %}
+            <h3>Excludes:</h3>
+            <p>{{ tour.excludes }}</p>
+        {% endif %}
+
+        <p><a href="{% url 'tours:tour_list' %}">Back to all Tours</a></p>
+
+        {# Booking button #}
+        {% if tour.available_slots > 0 %}
+            <a href="{% url 'tours:book_tour' pk=tour.pk %}" class="btn btn-success">Book This Tour Now!</a>
+        {% else %}
+            <p class="text-danger">Sorry, this tour is fully booked!</p>
+        {% endif %}
+
+        <hr>
+
+        {# Reviews Section #}
+        <h2>Customer Reviews</h2>
+        <div class="reviews-list">
+            {% if reviews %}
+                {% for review in reviews %}
+                    <div class="review-card" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; border-radius: 5px;">
+                        <p><strong>Rating:</strong> {{ review.rating }} stars</p>
+                        {% if review.comment %}
+                            <p>{{ review.comment }}</p>
+                        {% endif %}
+                        <small>By {{ review.user.username }} on {{ review.date_posted|date:"F d, Y" }}</small>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No reviews yet for this tour. Be the first to leave one!</p>
+            {% endif %}
+        </div>
+
+        {# Review Submission Form #}
+        {% if request.user.is_authenticated %}
+            {% if not user_has_reviewed %}
+                <div class="content-section" style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px;">
+                    <h3>Leave a Review</h3>
+                    <form method="POST" action="{% url 'tours:tour_detail' pk=tour.pk %}"> {# Form submits to current page #}
+                        {% csrf_token %}
+                        {{ review_form|crispy }}
+                        <div class="form-group">
+                            <button type="submit" name="review_submit" class="btn btn-primary">Submit Review</button>
+                        </div>
+                    </form>
+                </div>
+            {% else %}
+                <p style="margin-top: 20px;">You have already reviewed this tour. Thank you!</p>
+            {% endif %}
+        {% else %}
+            <p style="margin-top: 20px;">Please <a href="{% url 'users:login' %}">log in</a> to leave a review.</p>
+        {% endif %}
+
+    </div> {# Close tour-detail-container #}
+{% endblock %}

@@ -1,0 +1,35 @@
+{# tourist_management_system_project/templates/users/profile.html #}
+
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}User Profile{% endblock %}
+
+{% block content %}
+    <div class="content-section">
+        <div class="media">
+            {% if user.userprofile.profile_picture %}
+                <img class="rounded-circle account-img" src="{{ user.userprofile.profile_picture.url }}" style="height:100px; width:100px;">
+            {% else %}
+                {# Provide a default placeholder image if no profile picture is uploaded yet #}
+                <img class="rounded-circle account-img" src="{% static 'images/default_profile_pic.png' %}" style="height:100px; width:100px;">
+            {% endif %}
+            <div class="media-body">
+                <h2 class="account-heading">{{ user.username }}</h2>
+                <p class="text-secondary">{{ user.email }}</p>
+            </div>
+        </div>
+        <form method="POST" enctype="multipart/form-data"> {# IMPORTANT: enctype for file uploads #}
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Profile Info</legend>
+                {{ u_form|crispy }}
+                {{ p_form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Update</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{# tourist_management_system_project/templates/tours/tour_list.html #}
+
+{% extends 'base.html' %}
+
+{% block title %}All Tour Packages{% endblock %}
+
+{% block content %}
+    <h1>Our Tour Packages</h1>
+    {% if tours %}
+        <div class="tour-list">
+            {% for tour in tours %}
+                <div class="tour-card">
+                    <h3><a href="{% url 'tours:tour_detail' pk=tour.pk %}">{{ tour.name }}</a> ({{ tour.destination.name }})</h3> {# MODIFIED THIS LINE #}
+                    <p>Price: ${{ tour.price }}</p>
+                    <p>Duration: {{ tour.duration_days }} days</p>
+                    <p>Type: {{ tour.get_tour_type_display }}</p>
+                    <p>Available Slots: {{ tour.available_slots }} / {{ tour.max_participants }}</p>
+                    {# You can add more details here #}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No tour packages available at the moment. Please check back later!</p>
+    {% endif %}
+{% endblock %}
